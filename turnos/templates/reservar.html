@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block header %}
+    <title>Turnos :: Reservar</title>
+{% endblock  %}
+
+{% block body %}
+    <h1>Resrvar Turno</h1>
+    {% if mensaje  %}
+        <div>{{ mensaje }}</div>
+        <a href="{% url 'turnos:index' %}">Ver turnos</a>
+    {% endif %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="fecha">Fecha</label>
+        <input type="datetime" name="fecha">
+        <label for="paciente">Paciente</label>
+        <select name="paciente">
+            <option value=""></option>
+            {% for paciente in pacientes%}
+                <option value="{{paciente.id}}"> {{paciente}} </option>
+            {% endfor %}
+            
+        </select>
+        <label for="medico">Médico</label>
+        <select name="medico">
+            <option value=""></option>
+            {% for medico in medicos%}
+                <option value="{{medico.id}}"> {{medico}} </option>
+            {% endfor %}
+            
+        </select>
+        <input type="submit" value="Guardar">
+    </form>
+   
+{% endblock  %}

@@ -4,8 +4,17 @@
 {% endblock  %}
 
 {% block body %}
-<form action="" method="POST">
-    <label for="">Usuario</label>
-    <input type="text" name>
+
+{% if mensaje %}
+    <div>{{ mensaje }}</div>
+{% endif %}
+
+<form action="{% url 'usuarios:login' %}" method="POST">
+    {% csrf_token %}
+    <label for="username">Usuario</label>
+    <input type="text" name="username" placeholder="Usuario">
+    <label for="password">Password</label>
+    <input type="password" name="password" placeholder="Password">
+    <input type="submit" value="Ingresar">
 </form>
 {% endblock  %}

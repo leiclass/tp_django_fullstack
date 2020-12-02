@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block header %}
+    <title>Turnos :: listados</title>
+{% endblock  %}
+
+{% block body %}
+    <table border="1">
+        <thead>
+            <tr>
+                <td>Fecha:</td>
+                <td>Paciente:</td>
+                <td>Médico:</td>
+                <td><a href="{% url 'turnos:reservar' %}">+ Turno</a></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turno in turnos %} 
+                <tr>
+                    <td>{{ turno.fecha }}</td>
+                    <td>{{ turno.paciente }}</td>
+                    <td>{{ turno.medico }}</td>
+                    <td><a href="{% url 'turnos:turno' turno.id %}">Edit</a></td>
+                </tr>                
+            {% empty %} 
+                <tr>
+                    <td colspan="4">No hay turnos cargados</td>
+                </tr>
+            {% endfor %} 
+        </tbody>
+    </table> 
+{% endblock  %}
