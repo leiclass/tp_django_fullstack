@@ -20,12 +20,15 @@
     {% empty %} 
         <p>No hay Historia clínica cargada para este paciente</p>
     {% endfor %} 
-
+    
+    {% if perms.pacientes.add_historia %}    
     <hr>
     <h5>Agregar a la historia clínica</h5>
     <form method="POST" action="">
         {% csrf_token %}
         {{ form }}
+        <input type="hidden" name="medico" value="{{ user.id }}" readonly="readonly" id="id_medico">
         <input type="submit" value="Guardar" />
     </form>
+    {% endif %}
 {% endblock  %}

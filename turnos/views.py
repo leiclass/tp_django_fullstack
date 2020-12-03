@@ -5,6 +5,7 @@ from django.urls import reverse
 from .forms import TurnoAltaForm
 from .models import Turno
 from pacientes.models import Paciente
+
 # Create your views here.
 def index(request):
     data = {
