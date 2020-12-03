@@ -4,16 +4,19 @@
 {% endblock  %}
 
 {% block body %}
-    <h1>Editar  Turno</h1>
-    
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Guardar Modificación">
-    </form>
+    {% if perms.turnos.change_turno %}
 
-    {% if mensaje  %}
+        <h1>Editar  Turno</h1>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Guardar Modificación">
+        </form>
+
+        {% if mensaje  %}
         <div>{{ mensaje }}</div>
+        {% endif %}
     {% endif %}
     <a href="{% url 'turnos:index' %}">Ver turnos</a>
    

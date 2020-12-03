@@ -10,20 +10,43 @@
                 <td>Fecha:</td>
                 <td>Paciente:</td>
                 <td>Médico:</td>
-                <td><a href="{% url 'turnos:reservar' %}">+ Turno</a></td>
+                <td>
+                    {% if perms.turnos.add_turno %}
+                    <a href="{% url 'turnos:reservar' %}">+ Turno</a>
+                    {% endif %}
+                </td>
             </tr>
         </thead>
         <tbody>
             {% for turno in turnos %} 
+                {% if perms.pacientes.add_historia %}
+                    {% if user.id == turno.medico.id %}
+                    <tr>
+                        <td>{{ turno.fecha }}</td>
+                        <td>{{ turno.paciente }} {{ turno.paciente.id }}</td>
+                        <td>{{ turno.medico }}</td>
+                        <td>
+                            {% if perms.turnos.view_turno %}
+                            <a href="{% url 'pacientes:ver' turno.paciente.id %}"> Ver</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% else %}
                 <tr>
                     <td>{{ turno.fecha }}</td>
-                    <td>{{ turno.paciente }}</td>
+                    <td>{{ turno.paciente }} {{ turno.paciente.id }}</td>
                     <td>{{ turno.medico }}</td>
                     <td>
-                        <a href="{% url 'turnos:modificar_turno' turno.id %}">Edit</a>
-                        <a href="{% url 'turnos:eliminar_turno' turno.id %}">Del</a>
+                        {% if perms.turnos.change_turno %}
+                            <a href="{% url 'turnos:modificar_turno' turno.id %}">Edit</a>
+                        {% endif %}
+                        {% if perms.turnos.delete_turno %}
+                            <a href="{% url 'turnos:eliminar_turno' turno.id %}">Del</a>
+                        {% endif %}
                     </td>
-                </tr>                
+                </tr>
+                {% endif %}
             {% empty %} 
                 <tr>
                     <td colspan="4">No hay turnos cargados</td>
