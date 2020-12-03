@@ -1,37 +1,48 @@
-from django.shortcuts import render
-from .models import Turno
-from pacientes.models import Paciente
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import Group, User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .forms import TurnoAltaForm
+from .models import Turno
+from pacientes.models import Paciente
 # Create your views here.
 def index(request):
-    return render(request, 'turnos.html', {
+    data = {
         'turnos': Turno.objects.all()
-    })
+    }
+    return render(request, 'turnos.html', data)
 
-def reservar(request):
-    mensaje = ''
+def reservar(request):    
+    data = {
+        'form': TurnoAltaForm()
+    }
     if request.method == 'POST':
-        fecha = request.POST['fecha']
-        paciente_id = int(request.POST['paciente'])
-        paciente = Paciente.objects.get(id=paciente_id)
-        medico_id = int(request.POST['medico'])
-        medico = User.objects.get(id=medico_id)
+        formulario = TurnoAltaForm(data= request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            data['mensaje'] = "Turno reservado correctamente"
+        else:
+            data['form']  = formulario
+    return render(request, 'reservar.html', data)
 
-        t = Turno(fecha=fecha, paciente=paciente, medico=medico)
-        t.save()
-        return HttpResponseRedirect(reverse('turnos:index'))
-            
+def modificar_turno(request, id):
+    turno = get_object_or_404(Turno, id=id)
+    data = {
+        'form' : TurnoAltaForm(instance=turno)
+    }
+    if request.method == 'POST':
+        formulario = TurnoAltaForm(data= request.POST, instance=turno)
+        if formulario.is_valid():
+            formulario.save()
+            #return HttpResponseRedirect(reverse('turnos:index'))
+            return redirect(to='turnos:index')
+
+        #sino valida mando a editar con los datos del form
+        data['form']  = formulario
     
-    return render(request, 'reservar.html', {
-        'pacientes' : Paciente.objects.all(),
-        'medicos' : Group.objects.get(name="medicos").user_set.all(), 
-        'mensaje' : mensaje
-    })
+    return render(request, 'editar-turno.html', data)
 
-def turno(request, turno_id):
-    un_turno = Turno.objects.get(id=turno_id)
-    return render(request, 'turno.html', {
-        'turno' : un_turno
-    })
+def eliminar_turno(request, id):
+    turno = get_object_or_404(Turno, id=id)
+    turno.delete()
+    return redirect(to='turnos:index')

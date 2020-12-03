@@ -19,7 +19,10 @@
                     <td>{{ turno.fecha }}</td>
                     <td>{{ turno.paciente }}</td>
                     <td>{{ turno.medico }}</td>
-                    <td><a href="{% url 'turnos:turno' turno.id %}">Edit</a></td>
+                    <td>
+                        <a href="{% url 'turnos:modificar_turno' turno.id %}">Edit</a>
+                        <a href="{% url 'turnos:eliminar_turno' turno.id %}">Del</a>
+                    </td>
                 </tr>                
             {% empty %} 
                 <tr>

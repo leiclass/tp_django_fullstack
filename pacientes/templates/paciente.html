@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block header %}
+    <title>Pacientes :: historia</title>
+{% endblock  %}
+
+{% block body %}
+    <h1>Datos del paciente</h1>
+    <ul>
+        <li>Paciente: {{ paciente.nombre }} - {{ paciente.apellido }}</li>
+        <li>DNI: {{ paciente.dni }}</li>
+    </ul>
+
+    <h2>Historia Clínica</h2>
+    {% for h in historia %} 
+        <hr> 
+        <p> 
+            Fecha: {{ h.fecha }} - Atendido por: {{ h.medico }} 
+            <br> Historia: {{ h.consulta }}
+        </p>          
+    {% empty %} 
+        <p>No hay Historia clínica cargada para este paciente</p>
+    {% endfor %} 
+
+    <hr>
+    <h5>Agregar a la historia clínica</h5>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Guardar" />
+    </form>
+{% endblock  %}

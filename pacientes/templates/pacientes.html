@@ -1,8 +1,31 @@
 {% extends 'layout.html' %}
 {% block header %}
-    <title>Pacientes :: pacientes</title>
+    <title>Pacientes :: listado</title>
 {% endblock  %}
 
 {% block body %}
-pacientes
+    <table border="1">
+        <thead>
+            <tr>
+                <td>DNI:</td>
+                <td>Nombre:</td>
+                <td>Apellido:</td>
+                <td>Historia C.</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in pacientes %} 
+                <tr>
+                    <td>{{ p.dni }}</td>
+                    <td>{{ p.nombre }}</td>
+                    <td>{{ p.apellido }}</td>
+                    <td><a href="{% url 'pacientes:ver' p.id %}"> Ver</a></td>
+                </tr>                
+            {% empty %} 
+                <tr>
+                    <td colspan="4">No hay pacientes cargados</td>
+                </tr>
+            {% endfor %} 
+        </tbody>
+    </table> 
 {% endblock  %}

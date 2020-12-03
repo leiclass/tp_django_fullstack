@@ -1,15 +1,15 @@
 {% extends 'layout.html' %}
 {% block header %}
-    <title>Turnos :: Reservar</title>
+    <title>Turnos :: Editar</title>
 {% endblock  %}
 
 {% block body %}
-    <h1>Reservar Turno</h1>
+    <h1>Editar  Turno</h1>
     
     <form action="" method="POST">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" value="Guardar">
+        <input type="submit" value="Guardar Modificación">
     </form>
 
     {% if mensaje  %}
